@@ -2,11 +2,14 @@ site "http://community.opscode.com/api/v1"
 
 cookbook 'apt'
 cookbook 'build-essential'
-cookbook 'networking_basic'
+cookbook 'networking_basic', github: 'fred/fredz_cookbooks'
 cookbook 'openssl'
 cookbook 'git'
 cookbook 'sqlite'
 cookbook 'postgresql'
-cookbook 'rvm'
+cookbook 'rvm', {:github => 'fnichol/chef-rvm', :ref=>'v0.9.2'}
 cookbook 'nodejs', git: 'https://github.com/mdxp/nodejs-cookbook'
-cookbook 'vim'
+cookbook 'vim', {}
+cookbook "tmux", {}
+cookbook 'zsh', '~> 1.0.0'
+cookbook 'oh-my-zsh', '~> 0.4.3'
