@@ -13,3 +13,4 @@ cookbook 'vim', {}
 cookbook "tmux", {}
 cookbook 'zsh', '~> 1.0.0'
 cookbook 'oh-my-zsh', '~> 0.4.3'
+cookbook 'chef-solo-search', '~> 0.5.1'

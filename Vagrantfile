@@ -27,7 +27,8 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 
     chef.cookbooks_path = 'cookbooks'
     chef.log_level      = :debug
-
+    chef.data_bags_path = 'data_bags'
+    
     chef.add_recipe :apt
 
     chef.add_recipe 'build-essential'
@@ -42,18 +43,21 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     chef.add_recipe 'nodejs'
 
     chef.add_recipe 'tmux'
-    chef.add_recipe 'rvm::vagrant'
     chef.add_recipe 'rvm::system'
+    chef.add_recipe 'rvm::vagrant'
     chef.add_recipe 'vim'
 
-#    chef.add_recipe  'zsh'
- #   chef.add_recipe  'oh-my-zsh' 
+    chef.add_recipe  'zsh'
+    chef.add_recipe  'oh-my-zsh' 
 
+    chef.add_recipe 'chef-solo-search'
     # You may also specify custom JSON attributes:
     chef.json = {
       :rvm => {
-         rubies: %w(ruby-2.1.4 ruby-2.1.5)
-      },
+         rubies: %w(ruby-2.1.4 ruby-2.1.5),
+	 default_ruby: 'ruby-2.1.5', 
+	 vagrant: { system_chef_solo: "/opt/chef/bin/chef-solo" }
+     },
       :git        => {
         :prefix => true
       },
