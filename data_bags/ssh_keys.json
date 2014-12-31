@@ -1,0 +1,9 @@
+"ssh_keys": {
+  "user":"vagrant",
+  "group":"vagrant"
+  "path":"/home/vagrant/.ssh/"
+  "deploy": {
+    "id_rsa": "private key goes here",
+    "id_rsa.pub": "public key goes here"
+  }
+}

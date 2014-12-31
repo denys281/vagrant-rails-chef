@@ -2,5 +2,4 @@
 /cookbooks/*
 Cheffile.lock
 /tmp/*
-
-
+/.DS_Store

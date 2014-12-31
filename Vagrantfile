@@ -7,16 +7,34 @@ VAGRANTFILE_API_VERSION = "2"
 Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 
   config.vm.box = "ubuntu/trusty64"
-
   config.vm.network :forwarded_port, guest: 3000, host: 3000
-
   config.vm.network "private_network", ip: "192.168.33.10"
 
+  config.vm.synced_folder '.', '/vagrant', nfs: true
 
-  config.vm.provider "virtualbox" do |vb|
-     vb.customize ["modifyvm", :id, "--memory", "2048"]
+
+  config.vm.provider "virtualbox" do |v|
+    host = RbConfig::CONFIG['host_os']
+
+    # Give VM 1/4 system memory & access to all cpu cores on the host
+    if host =~ /darwin/
+      cpus = `sysctl -n hw.ncpu`.to_i
+      # sysctl returns Bytes and we need to convert to MB
+      mem = `sysctl -n hw.memsize`.to_i / 1024 / 1024 / 4
+    elsif host =~ /linux/
+      cpus = `nproc`.to_i
+      # meminfo shows KB and we need to convert to MB
+      mem = `grep 'MemTotal' /proc/meminfo | sed -e 's/MemTotal://' -e 's/ kB//'`.to_i / 1024 / 4
+    else # sorry Windows folks, I can't help you
+      cpus = 2
+      mem = 1024
+    end
+
+    v.customize ["modifyvm", :id, "--memory", mem]
+    v.customize ["modifyvm", :id, "--cpus", cpus]
   end
 
+  config.vm.provision :shell, :path => "bootstrap.sh", :privileged => false
 
 
   # Enable provisioning with chef solo, specifying a cookbooks path, roles
@@ -27,8 +45,6 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 
     chef.cookbooks_path = 'cookbooks'
     chef.log_level      = :debug
-    chef.data_bags_path = 'data_bags'
-    
     chef.add_recipe :apt
 
     chef.add_recipe 'build-essential'
@@ -39,27 +55,32 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 
     chef.add_recipe 'sqlite'
     chef.add_recipe 'postgresql::server'
-
+    chef.add_recipe 'postgresql::contrib'
     chef.add_recipe 'nodejs'
 
     chef.add_recipe 'tmux'
     chef.add_recipe 'rvm::system'
     chef.add_recipe 'rvm::vagrant'
     chef.add_recipe 'vim'
-
-    chef.add_recipe  'zsh'
-    chef.add_recipe  'oh-my-zsh' 
+    chef.add_recipe 'chef_keys'
 
     chef.add_recipe 'chef-solo-search'
     # You may also specify custom JSON attributes:
     chef.json = {
       :rvm => {
-         rubies: %w(ruby-2.1.4 ruby-2.1.5),
-	 default_ruby: 'ruby-2.1.5', 
-	 vagrant: { system_chef_solo: "/opt/chef/bin/chef-solo" }
-     },
-      :git        => {
+        rubies: %w(ruby-2.2.0 ruby-2.1.4),
+        default_ruby: 'ruby-2.2.0',
+        vagrant: { system_chef_solo: "/opt/chef/bin/chef-solo" }
+      },
+      :git => {
         :prefix => true
+      },
+      "ssh_keys"=> {
+        "username"=> 'vagrant',
+        "usergroup"=> 'vagrant',
+        "userhomedir"=> "/home/vagrant",
+        "id_rsa"=> "private key goes here",
+        "id_rsa.pub"=> "public key goes here"
       },
       :postgresql => {
         :config   => {
@@ -86,6 +107,13 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
             :db     => "all",
             :user   => "all",
             :addr   => "::1/0",
+            :method => "md5"
+          },
+          {
+            :type   => "host",
+            :db     => "all",
+            :user   => "all",
+            :addr   => "192.168.33.10/0",
             :method => "md5"
           }
         ],
