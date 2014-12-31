@@ -7,7 +7,7 @@ This box (with chef provisioner) start with a basic Ubuntu 14.04 (trusty) based 
 - rvm
 - ruby 2.1.4 and 2.2.0
 - Git 1.9.1
-- Postgresql 9.5 and SQLite
+- Postgresql 9.3 and SQLite
 - Node.js
 - ImageMagick
 
