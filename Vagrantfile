@@ -63,6 +63,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     chef.add_recipe 'rvm::vagrant'
     chef.add_recipe 'vim'
     chef.add_recipe 'chef_keys'
+    chef.add_recipe 'imagemagick'
 
     chef.add_recipe 'chef-solo-search'
     # You may also specify custom JSON attributes:

@@ -12,4 +12,5 @@ cookbook 'nodejs', git: 'https://github.com/mdxp/nodejs-cookbook'
 cookbook 'vim', {}
 cookbook "tmux", {}
 cookbook 'chef-solo-search', '~> 0.5.1'
-cookbook 'chef-keys', github: 'mipmip/chef-keys'
+cookbook 'chef-keys', github: 'denys281/chef-keys'
+cookbook 'imagemagick', '~> 0.2.3'
