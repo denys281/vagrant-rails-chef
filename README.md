@@ -39,13 +39,15 @@ This box (with chef provisioner) start with a basic Ubuntu 14.04 (trusty) based 
 
 * Web server is accessible with http://192.168.33.10 (IP address can be changed in Vagrantfile)
 
+* You can add you deploy ssh keys to ```data_bags/ssh_keys.json``` 
+
 * Vagrant automatically create user for Postgres :
 
 **Postgres:**
 * Username: postgres
 * Password: postgres
 
-* You can add you deploy ssh keys to ```data_bags/ssh_keys.json```
+
 ----------
 
 
