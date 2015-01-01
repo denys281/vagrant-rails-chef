@@ -45,6 +45,7 @@ This box (with chef provisioner) start with a basic Ubuntu 14.04 (trusty) based 
 * Username: postgres
 * Password: postgres
 
+* You can add you deploy ssh keys to ```data_bags/ssh_keys.json```
 ----------
 
 
@@ -53,7 +54,6 @@ Vagrant use 1/4 system memory & access to all cpu cores on the host
 
 ----------
 
-f
 If needed, you can customize `config.vm.provision` script according to your app specifics, in such case just run `vagrant provision` in order to reload all scripts.
 
 You can run `vagrant -h` to see some handy vagrant commands
