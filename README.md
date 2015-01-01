@@ -24,7 +24,7 @@ This box (with chef provisioner) start with a basic Ubuntu 14.04 (trusty) based 
 
 * Clone this repository
 
-```$ git clone https://github.com/denys281/vagrant-rails.git```
+```$ git clone https://github.com/denys281/vagrant-rails-chef.git```
 
 * Install librarian-chef gem
 
