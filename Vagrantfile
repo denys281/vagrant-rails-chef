@@ -12,7 +12,6 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 
   config.vm.synced_folder '.', '/vagrant', nfs: true
 
-
   config.vm.provider "virtualbox" do |v|
     host = RbConfig::CONFIG['host_os']
 
@@ -34,8 +33,6 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     v.customize ["modifyvm", :id, "--cpus", cpus]
   end
 
-  config.vm.provision :shell, :path => "bootstrap.sh", :privileged => false
-
 
   # Enable provisioning with chef solo, specifying a cookbooks path, roles
   # path, and data_bags path (all relative to this Vagrantfile), and adding
@@ -44,9 +41,10 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   config.vm.provision "chef_solo" do |chef|
 
     chef.cookbooks_path = 'cookbooks'
+    data_bags_path = 'vagrant/data_bags'
     chef.log_level      = :debug
-    chef.add_recipe :apt
 
+    chef.add_recipe :apt
     chef.add_recipe 'build-essential'
     chef.add_recipe 'networking_basic'
     chef.add_recipe 'openssl'
@@ -63,7 +61,6 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     chef.add_recipe 'rvm::vagrant'
     chef.add_recipe 'vim'
     chef.add_recipe 'chef_keys'
-    chef.add_recipe 'imagemagick'
 
     chef.add_recipe 'chef-solo-search'
     # You may also specify custom JSON attributes:
@@ -132,6 +129,6 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 
   end
 
-
+  config.vm.provision :shell, :path => "vagrant/bootstrap.sh", :privileged => false
 
 end
